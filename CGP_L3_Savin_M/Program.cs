@@ -22,7 +22,7 @@ namespace CGP_L3_Savin_M
             Console.WriteLine();
 
             Task.WhenAll(
-                Enumerable.Range(0, (int)n + 1).Select(i => processor.Process(a, i, h))
+                Enumerable.Range(0, (int)n + 1).Select(i => Task.Run(() => processor.Process(a, i, h)))
             ).Result.ToList().ForEach((i, r) => Console.WriteLine("[" + i + "]: " + r));
         }
     }

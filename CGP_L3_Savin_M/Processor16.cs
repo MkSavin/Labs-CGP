@@ -18,6 +18,8 @@ namespace CGP_L3_Savin_M
         public double Third(double x) => Math.Exp(7 * Math.Sqrt(Math.Abs(x)));
         public double Fourth(double x) => 0.3 * (Math.Pow(x, 3) + Math.Pow(x, 2) - 1);
 
+        public double Process(double x) => First(x) - Second(x) - Third(x) + Fourth(x);
+
         public double Param(double a, double i, double h) => a + h * i;
     }
 }
