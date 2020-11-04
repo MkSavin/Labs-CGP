@@ -37,8 +37,6 @@ namespace CGP_L6_Savin_M
                 brushManager = new BrushManager();
 
                 layerManager
-                    .Add(new Layer(width, height))
-                    .Add(new Layer(width, height))
                     .Add(new Layer(width, height));
 
                 brushManager
@@ -208,11 +206,19 @@ namespace CGP_L6_Savin_M
                     optionsBar.Controls();
                 };
 
+                var loaded = false;
+
                 baseWindow.Resize += (sender, e) =>
                 {
                     if (baseWindow.Width != 0 && baseWindow.Height != 0)
                     {
                         TextUtility.textRenderer = new TextRenderer(baseWindow.Width, baseWindow.Height);
+                        
+                        if (loaded)
+                        {
+                            layerManager.SetLayersSize(baseWindow.Width, baseWindow.Height);
+                        }
+                        loaded = true;
                     }
                 };
 
@@ -222,6 +228,9 @@ namespace CGP_L6_Savin_M
 
                 baseWindow.Render((deltaTick) =>
                 {
+                    width = baseWindow.Width;
+                    height = baseWindow.Height;
+
                     GL.BindTexture(TextureTarget.Texture2D, 0);
 
                     mouseState = Mouse.GetCursorState();
@@ -386,6 +395,34 @@ namespace CGP_L6_Savin_M
             {
                 layer.Render(index++);
             }
+        }
+
+        public void SetLayersSize(int width, int height)
+        {
+            var newLayers = new List<Layer>();
+            Layer newLayer;
+
+            foreach (var layer in Elements)
+            {
+                newLayer = new Layer(width, height);
+
+                for (int x = 0; x < width; x++)
+                {
+                    for (int y = 0; y < height; y++)
+                    {
+                        if (x >= layer.Bitmap.Width || y >= layer.Bitmap.Height)
+                        {
+                            continue;
+                        }
+
+                        newLayer.Bitmap.SetPixel(x, y, layer.Bitmap.GetPixel(x, y));
+                    }
+                }
+
+                newLayers.Add(newLayer);
+            }
+
+            Elements = newLayers;
         }
     }
 
