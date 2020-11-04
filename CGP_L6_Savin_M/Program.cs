@@ -531,8 +531,8 @@ namespace CGP_L6_Savin_M
             {
                 bo.SetOnSet((last, current, option) => {
                     manager.CurrentElement = current;
-                    Program.SetDefaultSizeOption.OnSet(last, current);
-                    Program.SetDefaultColorOption.OnSet(last, current);
+                    // Program.SetDefaultSizeOption.OnSet(last, current);
+                    // Program.SetDefaultColorOption.OnSet(last, current);
                 });
             }
             return bo;
